@@ -1,0 +1,89 @@
+# version: "3.9"  # Docker Compose file format version (stable & recommended)
+
+services:
+
+  # ============================
+  # PROMETHEUS SERVICE
+  # ============================
+  prometheus:
+    image: prom/prometheus:v2.45.0   # Official Prometheus image (version pinned)
+    container_name: prometheus       # Fixed container name for easy management
+
+    volumes:
+      # Mount Prometheus main configuration file
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+
+      # Mount alert rules file (CPU, server down alerts, etc.)
+      - ./prometheus/alert_rules.yml:/etc/prometheus/alert_rules.yml
+
+      # Persistent volume to store metrics data (VERY IMPORTANT)
+      - prometheus_data:/prometheus
+
+    command:
+      # Tell Prometheus where the config file is
+      - "--config.file=/etc/prometheus/prometheus.yml"
+
+      # Tell Prometheus where to store time-series data
+      - "--storage.tsdb.path=/prometheus"
+
+    ports:
+      # Expose Prometheus UI on host machine
+      - "9090:9090"
+
+    restart: always   # Restart container automatically if it crashes or server reboots
+
+
+  # ============================
+  # ALERTMANAGER SERVICE
+  # ============================
+  alertmanager:
+    image: prom/alertmanager:v0.27.0   # Official Alertmanager image
+    container_name: alertmanager
+
+    volumes:
+      # Mount Alertmanager email configuration
+      - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+
+    command:
+      # Use the mounted Alertmanager config file
+      - "--config.file=/etc/alertmanager/alertmanager.yml"
+
+    ports:
+      # Expose Alertmanager UI
+      - "9093:9093"
+
+    restart: always
+
+
+  # ============================
+  # GRAFANA SERVICE
+  # ============================
+  grafana:
+    image: grafana/grafana:10.4.0   # Official Grafana image (version pinned)
+    container_name: grafana
+
+    environment:
+    - GF_SECURITY_ADMIN_USER=admin
+    - GF_SECURITY_ADMIN_PASSWORD=Monica2310@
+
+    volumes:
+      # Persistent storage for Grafana data:
+      # - dashboards
+      # - datasources
+      # - users
+      - grafana_data:/var/lib/grafana
+      # - ./grafana/provisioning:/etc/grafana/provisioning   # Optional: Predefined dashboards & datasources
+
+    ports:
+      # Expose Grafana web UI
+      - "3000:3000"
+
+    restart: always
+
+
+# ============================
+# DOCKER VOLUMES
+# ============================
+volumes:
+  prometheus_data:   # Stores Prometheus metrics permanently
+  grafana_data:      # Stores Grafana dashboards & configuration

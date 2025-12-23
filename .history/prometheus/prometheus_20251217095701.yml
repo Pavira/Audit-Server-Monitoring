@@ -1,0 +1,21 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  - /etc/prometheus/alert_rules.yml
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - alertmanager:9093
+
+scrape_configs:
+  - job_name: 'windows_servers'
+    static_configs:
+      - targets:
+          - '192.168.0.139:9182' # Localhost
+          - '10.0.207.2:9182'  # Tenkasi
+          # - '192.168.1.11:9182'
+          # - '192.168.1.12:9182'

@@ -1,0 +1,14 @@
+# Alertmanager configuration file
+global:
+  smtp_smarthost: 'smtp.gmail.com:587'
+  smtp_from: 'monitor@company.com'
+  smtp_auth_username: 'monitor@company.com'
+  smtp_auth_password: 'APP_PASSWORD'
+
+route:
+  receiver: 'email-alert'
+
+receivers:
+- name: 'email-alert'
+  email_configs:
+  - to: 'admin@company.com'

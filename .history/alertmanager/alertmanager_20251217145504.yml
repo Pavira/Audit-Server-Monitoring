@@ -1,0 +1,38 @@
+# Alertmanager configuration file
+global:
+  smtp_smarthost: 'smtp.gmail.com:587'
+  smtp_from: 'monitor@company.com'
+  smtp_auth_username: 'monitor@company.com'
+  smtp_auth_password: 'APP_PASSWORD'
+  smtp_require_tls: true
+
+route:
+  receiver: 'email-alert'
+  group_by: ['alertname']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+
+receivers:
+- name: 'email-alert'
+  email_configs:
+  - to: 'admin@company.com'
+    send_resolved: true
+    headers:
+      subject: "🚨 {{ .CommonAnnotations.summary }}"
+    html: |
+      <h2 style="color:red;">🚨 Server Down Alert</h2>
+
+      {{ range .Alerts }}
+      <p>
+        <b>Server Name:</b> {{ .Labels.server_name }}<br>
+        <b>Instance:</b> {{ .Labels.instance }}<br>
+        <b>Status:</b> DOWN<br>
+        <b>Severity:</b> {{ .Labels.severity }}<br>
+        <b>Started At:</b> {{ .StartsAt }}
+      </p>
+      <hr>
+      {{ end }}
+
+      <p>Please take immediate action.</p>
+

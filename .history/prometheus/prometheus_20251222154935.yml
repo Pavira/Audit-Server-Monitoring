@@ -1,0 +1,94 @@
+# Prometheus configuration file
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s
+
+rule_files:
+  - /etc/prometheus/alert_rules.yml
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - alertmanager:9093
+
+scrape_configs:
+  - job_name: 'windows_servers'
+    static_configs:
+      - targets:
+          - '192.168.0.139:9182'
+        labels:
+          server_name: 'LOCALHOST'
+      
+      - targets:
+          - '192.168.50.254:9182'
+        labels:
+          server_name: 'Siva-Machine'
+       
+      # HO Server
+      - targets:
+          - 'WIN-TK201B2EL0C:9182'
+        labels:
+          server_name: 'DAIVELHO-SERVER'
+      
+      # Cumbum Server
+      - targets:
+          - '10.0.205.2:9182'
+        labels:
+          server_name: 'CUMBUM-SERVER'
+      
+      # SIVAKI Server
+      - targets:
+          - '10.0.203.2:9182'
+        labels:
+          server_name: 'SIVAKI-SERVER'
+
+      # NAGERCOIL Server
+      - targets:
+          - '10.0.204.2:9182'
+        labels:
+          server_name: 'NAGERCOIL-SERVER'
+
+      # TIRUNELVELI Server
+      - targets:
+          - '10.0.202.2:9182'
+        labels:
+          server_name: 'TIRUNELVELI-SERVER'
+
+      # TUTICORIN Server
+      - targets:
+          - '10.0.201.2:9182'
+        labels:
+          server_name: 'TUTICORIN-SERVER'
+
+      # THENI Server
+      - targets:
+          - '10.0.206.3:9182'
+        labels:
+          server_name: 'THENI-SERVER'
+
+      # PALANI Server
+      - targets:
+          - '10.0.208.2:9182'
+        labels:
+          server_name: 'PALANI-SERVER'
+
+      # OCEANSAPPHIRE Server
+      - targets:
+          - '10.0.217.2:9182'
+        labels:
+          server_name: 'OCEANSAPPHIRE-SERVER'
+
+      # Tenkasi Server
+      - targets:
+          - '10.0.207.2:9182'
+        labels:
+          server_name: 'ARUPUKOTTAI-SERVER'
+
+      # Tenkasi Server
+      - targets:
+          - '10.0.207.2:9182'
+        labels:
+          server_name: 'TENKASI-SERVER'
+
+      

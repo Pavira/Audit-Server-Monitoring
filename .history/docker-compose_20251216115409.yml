@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  prometheus: #Logical service name. Used by other containers (Grafana / Alertmanager) to connect via:
+    image: prom/prometheus:v2.50.0
+    container_name: prometheus #Fixed container name instead of random Docker-generated name.
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/alert_rules.yml:/etc/prometheus/alert_rules.yml
+      - prometheus_data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+    ports:
+      - "9090:9090"
+    restart: always
+
+  # alertmanager:
+  #   image: prom/alertmanager:v0.27.0
+  #   container_name: alertmanager
+  #   volumes:
+  #     - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+  #   command:
+  #     - "--config.file=/etc/alertmanager/alertmanager.yml"
+  #   ports:
+  #     - "9093:9093"
+  #   restart: always
+
+  grafana:
+    image: grafana/grafana:10.4.0
+    container_name: grafana
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    ports:
+      - "3000:3000"
+    restart: always
+
+volumes:
+  prometheus_data:
+  grafana_data:

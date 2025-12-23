@@ -1,0 +1,19 @@
+# Alerting rules for Windows servers
+groups:
+- name: windows-alerts
+  rules:
+  - alert: WindowsServerDown
+    expr: up == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "🚨 Server Down Alert"
+      description: >
+        The Windows server **{{ $labels.server_name }}**
+        ({{ $labels.instance }}) is currently **DOWN**.
+
+        Please check:
+        - Network connectivity
+        - Windows Exporter service
+        - Server power & OS status
