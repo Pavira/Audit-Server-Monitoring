@@ -1,82 +1,95 @@
 # Prometheus configuration file
+# ============================
+# GLOBAL CONFIGURATION
+# ============================
 global:
-  scrape_interval: 5s
-  evaluation_interval: 5s
+  scrape_interval: 10s        # How often Prometheus scrapes metrics
+  evaluation_interval: 10s    # How often rules are evaluated
 
-rule_files:
-  - /etc/prometheus/alert_rules.yml
-
+# ============================
+# ALERTMANAGER CONFIGURATION
+# ============================
 alerting:
   alertmanagers:
     - static_configs:
         - targets:
-            - alertmanager:9093
+            - alertmanager:9093   # Alertmanager service name (Docker DNS)
 
+# ============================
+# RULE FILES
+# ============================
+rule_files:
+  - "/etc/prometheus/alert_rules.yml"
+
+# Example: Windows Exporter (Server Monitoring)
 scrape_configs:
   - job_name: 'windows_servers'
     static_configs:
+     
+     # Pavi Local Machine  
       - targets:
           - '192.168.0.139:9182'
         labels:
-          server_name: 'LOCALHOST'
+          server_name: 'Pavi-Machine'
       
+      # Siva Machine
       - targets:
           - '192.168.50.254:9182'
         labels:
           server_name: 'Siva-Machine'
        
-      # # 1 HO Server
-      # - targets:
-      #     - 'WIN-TK201B2EL0C:9182'
-      #   labels:
-      #     server_name: 'DAIVELHO-SERVER'
+      # 1 HO Server
+      - targets:
+          - '192.168.50.32:9182'
+        labels:
+          server_name: 'HO-SERVER'
       
-      # # 2 Cumbum Server
-      # - targets:
-      #     - '10.0.205.2:9182'
-      #   labels:
-      #     server_name: 'CUMBUM-SERVER'
+      # 2 Cumbum Server
+      - targets:
+          - '10.0.205.2:9182'
+        labels:
+          server_name: 'CUMBUM-SERVER'
       
-      # # 3 SIVAKI Server
-      # - targets:
-      #     - '10.0.203.2:9182'
-      #   labels:
-      #     server_name: 'SIVAKI-SERVER'
+      # 3 SIVAKI Server
+      - targets:
+          - '10.0.203.2:9182'
+        labels:
+          server_name: 'SIVAKI-SERVER'
 
-      # # 4 NAGERCOIL Server
-      # - targets:
-      #     - '10.0.204.2:9182'
-      #   labels:
-      #     server_name: 'NAGERCOIL-SERVER'
+      # 4 NAGERCOIL Server
+      - targets:
+          - '10.0.204.2:9182'
+        labels:
+          server_name: 'NAGERCOIL-SERVER'
 
-      # # 5 TIRUNELVELI Server
-      # - targets:
-      #     - '10.0.202.2:9182'
-      #   labels:
-      #     server_name: 'TIRUNELVELI-SERVER'
+      # 5 TIRUNELVELI Server
+      - targets:
+          - '10.0.202.2:9182'
+        labels:
+          server_name: 'TIRUNELVELI-SERVER'
 
-      # # 6 TUTICORIN Server
-      # - targets:
-      #     - '10.0.201.2:9182'
-      #   labels:
-      #     server_name: 'TUTICORIN-SERVER'
+      # 6 TUTICORIN Server
+      - targets:
+          - '10.0.201.2:9182'
+        labels:
+          server_name: 'TUTICORIN-SERVER'
 
-      # # 7 THENI Server
-      # - targets:
-      #     - '10.0.206.3:9182'
-      #   labels:
-      #     server_name: 'THENI-SERVER'
+      # 7 THENI Server
+      - targets:
+          - '10.0.206.3:9182'
+        labels:
+          server_name: 'THENI-SERVER'
 
-      # # 8 PALANI Server
-      # - targets:
-      #     - '10.0.208.2:9182'
-      #   labels:
-      #     server_name: 'PALANI-SERVER'
+      # 8 PALANI Server
+      - targets:
+          - '10.0.208.2:9182'
+        labels:
+          server_name: 'PALANI-SERVER'
 
-      # # 9 ARUPUKOTTAI Server
-      # - targets:
-      #     - '10.0.209.2:9182'
-      #   labels:
-      #     server_name: 'ARUPUKOTTAI-SERVER'
+      # 9 ARUPUKOTTAI Server
+      - targets:
+          - '10.0.209.2:9182'
+        labels:
+          server_name: 'ARUPUKOTTAI-SERVER'
 
       

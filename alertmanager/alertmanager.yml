@@ -6,15 +6,20 @@ global:
   smtp_auth_password: 'jbnv hhma xcua ipue'
   smtp_require_tls: true
 
+# ============================
+# ROUTING LOGIC
+# ============================
 route:
-  receiver: 'email-alert'
-  group_by: ['alertname']
-  group_wait: 30s
-  group_interval: 5m
-  repeat_interval: 4h
+  receiver: "email-alerts"   # Default receiver
+  group_wait: 30s            # Wait before sending first alert
+  group_interval: 5m         # Minimum time between alert groups
+  repeat_interval: 4h        # Re-send unresolved alerts
 
+# ============================
+# ALERT RECEIVERS
+# ============================
 receivers:
-- name: 'email-alert'
+- name: 'email-alerts'
   email_configs:
   - to: 'mis@ktmj.org'
     send_resolved: true

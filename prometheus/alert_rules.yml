@@ -1,14 +1,45 @@
-# Alerting rules for Windows servers
+# ============================================================
+# ALERTING RULES FOR WINDOWS SERVERS
+# ============================================================
+# This file defines alert conditions that Prometheus evaluates.
+# When a condition matches for the defined duration (`for:`),
+# the alert is sent to Alertmanager.
+# ============================================================
 groups:
 - name: windows-alerts
+
+  # Group name helps organize related alerts.
+  # All alerts in this group are evaluated together.
+
+
   rules:
   - alert: WindowsServerDown
+    # Unique alert name.
+    # This name is used by Alertmanager for routing,
+    # grouping, and notification handling.
+
     expr: up == 0
+    # Expression logic:
+    # `up` is a built-in Prometheus metric.
+    # up == 1  → target is reachable
+    # up == 0  → target is unreachable (DOWN)
+
     for: 30s
+    # Alert will fire ONLY if the condition
+    # (up == 0) remains true continuously for 30 seconds.
+    # This avoids false alerts due to short network glitches.
+    
     labels:
       severity: critical
+      # Severity label helps Alertmanager decide:
+      # - Who should be notified
+      # - How urgently
+      # - Which channel (email, Slack, SMS, etc.)
+
     annotations:
       summary: "🚨 Server Down Alert"
+       # Short alert title shown in email / Slack subject
+
       description: >
         The Windows server **{{ $labels.server_name }}**
         ({{ $labels.instance }}) is currently **DOWN**.
